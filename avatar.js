@@ -10,7 +10,7 @@
       var is_demo = opts.is_demo;
 
       var my_css = ' <style> \
-            .jtailor-layer{display:none;position:fixed;z-index:100;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);}\
+            .jtailor-layer{display:none;position:fixed;z-index:100;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);font-family:"微软雅黑";}\
             .jtailor-layer .lywrap{overflow:hidden;width:560px;padding:15px 0;margin:60px auto 0;background-color:#fafafa; text-align:center;box-shadow:10px 10px 10px;}\
             .jtailor-layer .lywrap h5{padding:0;margin-top:0;}\
             .jtailor-layer.z-show{display:block;}\
@@ -23,12 +23,13 @@
             .jtailor-layer .have-img .frames{display:block}\
             .jtailor-layer .info_pic_file { margin:200px auto 0;}\
             .jtailor-layer .info_pic_submit { display:none; }\
+            .jtailor-layer .microImage{ position:absolute;left:440px;top:100px;width:100px;text-align:center;}\
             .jtailor-layer .pre-view { position:absolute;left:440px; top:150px; height:100px; width:100px; background-color:#C2C2C2;}\
             .jtailor-layer .have-img .info_pic_file {display:none;}\
-            .jtailor-layer .u-minus, .jtailor-layer .u-plus { margin:5px; background-color:#7F7F7F; color:white; border:none;}\
-            .jtailor-layer .u-submit, .u-cancel {  float:right; border:none; color:white; }\
-            .jtailor-layer .u-submit { margin-right:8px; background-color: #EE7600; }\
-            .jtailor-layer .u-cancel { margin-right: 20px;  background-color:#949494;}\
+            .jtailor-layer .u-minus, .jtailor-layer .u-plus { padding:1px 6px;margin:10px; background-color:#7F7F7F; color:white; border:none;font-size:16px;}\
+            .jtailor-layer .u-submit, .u-cancel {  float:right; border:none; color:white;font-family:"微软雅黑"; }\
+            .jtailor-layer .u-submit { padding:3px 10px;margin-right:8px; background-color: #EE7600; }\
+            .jtailor-layer .u-cancel { padding:3px 10px;margin-right: 20px;  background-color:#949494;}\
             </style>';
 
       var my_html = '<div class="jtailor-layer">\
@@ -43,6 +44,7 @@
                     <input type="submit" class="info_pic_submit" />\
                     </form>\
                   </div>\
+                  <h5 class="microImage">缩略图</h5>\
                   <canvas class="pre-view" width="100" height="100"></canvas>\
                   <button class="u-minus">&ndash;</button>\
                   <button class="u-plus">&#43;</button>\
@@ -52,10 +54,14 @@
               </div>\
           </div>';
 
-      var my_demo = document.createElement('img');
+      // var my_demo = document.createElement('img');
 
       $('head').append(my_css);
       var t = $(this);
+      var my_demo;
+      if(is_demo){
+        my_demo=t.parent().find('img');
+      }
       t.after(my_html);
       t.click(function() {
         $('.jtailor-layer').addClass('z-show');
@@ -181,7 +187,7 @@
           var src = this.canvas.toDataURL(type);
           if (is_demo) {
             $(my_demo).attr('src', src);
-            t.after(my_demo);
+            t.before(my_demo);
           }
           src = src.split(',')[1];
           if (!src) return this.doneCallback(null);
