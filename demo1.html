@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Basic Handler | Jcrop Demo</title>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+
+<script src="http://apps.bdimg.com/libs/jquery/2.0.0/jquery.js" type="text/javascript"></script>
+<script src="avatar.js"></script>
+</head>
+<body>
+<button class="test" style='display:block;width:100px;'>上传头像</button>
+<script>
+$(document).ready(function(){
+    var post="#";
+    var name="my_file";
+    $('.test').avatar_init({post_url:post,post_name: name, is_demo: true});
+});
+</script>
+</body>
+</html>
