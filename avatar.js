@@ -187,7 +187,7 @@
           var src = this.canvas.toDataURL(type);
           if (is_demo) {
             $(my_demo).attr('src', src);
-            t.before(my_demo);
+            // t.before(my_demo);
           }
           src = src.split(',')[1];
           if (!src) return this.doneCallback(null);
