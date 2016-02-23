@@ -64,7 +64,7 @@
                     <img src="">\
                     <div class="frames"></div>\
                     <form class="info_pic_form" action="' + post_url + '">\
-                    <input type="file" class="info_pic_file" name="' + post_name + '/>\
+                    <input type="file" accept="image/*" class="info_pic_file" name="' + post_name + '/>\
                     <input type="submit" class="info_pic_submit" />\
                     </form>\
                   </div>\
