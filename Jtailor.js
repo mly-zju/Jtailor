@@ -7,11 +7,13 @@
       var src_url = opts.src_url;
       var post_url = opts.post_url;
       var post_name = opts.post_name;
-      var is_demo = opts.is_demo;
       var size_level = opts.size_level;
       var component_width;
       var component_height;
       var component_font_size;
+      var success=opts.success;
+      var fail=opts.fail;
+
       if (size_level == 'big') {
         component_width = '150px';
         component_height = '180px';
@@ -28,7 +30,7 @@
 
       var my_css = ' <style> \
             .jtailor-layer{display:none;position:fixed;z-index:100;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);font-family:"微软雅黑";}\
-            .jtailor-layer .lywrap{overflow:hidden;width:600px;padding:15px 0;margin:60px auto 0;background-color:#fafafa; text-align:center;box-shadow:10px 10px 10px;border-radius:5px;}\
+            .jtailor-layer .lywrap{overflow:hidden;width:600px;height:510px;padding:15px 0;margin:auto;position:absolute;left:0;right:0;top:0;bottom:0;background-color:#fafafa; text-align:center;box-shadow:10px 10px 10px;border-radius:5px;}\
             .jtailor-layer .lywrap h5{padding:0;margin-top:0;}\
             .jtailor-layer.z-show{display:block;}\
             .jtailor-layer .resizer{overflow: hidden;position:relative;}\
@@ -49,8 +51,9 @@
             .jtailor-layer .u-submit, .u-cancel {  float:right; border:none; color:white;font-family:"微软雅黑"; }\
             .jtailor-layer .u-submit { padding:3px 10px;margin-right:8px; background-color: #EE7600; }\
             .jtailor-layer .u-cancel { padding:3px 10px;margin-right: 20px;  background-color:#949494;}\
-        	.jtailor_avatar{width:' + component_width + ';height:' + component_width + ';display:inline-block;background-color:#C2C2C2;text-align:center}\
-        	.jtailor_avatar_upload{position:absolute;width:100%;font-size:' + component_font_size + ';font-family:"微软雅黑";padding:2px 0;bottom:0;left:0;background-color:rgb(61,147,215);color:white;border:none;outline:none;}\
+            .jtailor_avatar_wrapper{float:left;position:relative;}\
+        	  .jtailor_avatar{width:' + component_width + ';height:' + component_width + ';display:inline-block;background-color:#C2C2C2;text-align:center}\
+        	  .jtailor_avatar_upload{position:absolute;width:100%;font-size:' + component_font_size + ';font-family:"微软雅黑";padding:2px 0;bottom:0;left:0;background-color:rgb(61,147,215);color:white;border:none;outline:none;}\
             </style>';
 
       var my_html = '<div class="jtailor-layer">\
@@ -77,10 +80,6 @@
               </div>\
           </div>';
 
-      var my_html2 = '<img src="" alt="等待上传头像" class="jtailor_avatar"/>\
-          <button class="jtailor_avatar_upload">上传头像</button>';
-
-      // var my_demo = document.createElement('img');
 
       $('head').append(my_css);
       var t = $(this);
@@ -89,11 +88,7 @@
         'height': component_height
       });
       t.after(my_html);
-      t.append(my_html2);
-      var my_demo;
-      if (is_demo) {
-        my_demo = $('.jtailor_avatar');
-      }
+      var my_demo=$('.jtailor_avatar');
       $('.jtailor_avatar_upload').click(function() {
         $('.jtailor-layer').addClass('z-show');
       });
@@ -169,16 +164,12 @@
             xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
           }
           xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-              //   var data;
-              //   data = eval("(" + xmlhttp.responseText + ")");
-              //   if (data["state"] === "SUCCESS") {
-              //     img.attr("src", data["url"]);
-              //     $("#content-vchannel-thumb").val(data["url"]);
-              //   } else {
-              //     return alert(data["data"]);
-              //   }
-              //   alert('ok!');
+            if (xmlhttp.readyState == 4 ) {
+              if( xmlhttp.status == 200){
+                success(xmlhttp.responseText);
+              }else{
+                fail(xmlhttp.status);
+              }
             }
           }
           xmlhttp.open("POST", url);
@@ -246,9 +237,8 @@
           } else {
             src = this.canvas_small.toDataURL(type);
           }
-          if (is_demo) {
+          if (my_demo.length>0) {
             $(my_demo).attr('src', src);
-          // t.before(my_demo);
           }
           src = src.split(',')[1];
           if (!src) return this.doneCallback(null);
@@ -449,7 +439,8 @@
     src_url: '',
     post_url: '',
     post_name: '',
-    is_demo: false,
-    size_level: 'middle'
+    size_level: 'middle',
+    success: function(data){},
+    fail: function(data){}
   }
 }(window.jQuery);
