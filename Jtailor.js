@@ -133,9 +133,11 @@
           //   console.log(resizer.frames.offset.left);
           if (tmp > max) {
             tmp = max;
-          } else if (tmp + resizer.frames.offset.left > resizer.image.offsetLeft + resizer.image.offsetWidth) {
+          } 
+          if (tmp + resizer.frames.offset.left > resizer.image.offsetLeft + resizer.image.offsetWidth) {
             tmp = resizer.image.offsetLeft + resizer.image.offsetWidth - resizer.frames.offset.left;
-          } else if (tmp + resizer.frames.offset.top > resizer.image.offsetTop + resizer.image.offsetHeight) {
+          } 
+          if (tmp + resizer.frames.offset.top > resizer.image.offsetTop + resizer.image.offsetHeight) {
             tmp = resizer.image.offsetTop + resizer.image.offsetHeight - resizer.frames.offset.top;
           }
           resizer.setFrameSize(tmp);
