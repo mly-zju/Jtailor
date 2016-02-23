@@ -8,10 +8,27 @@
       var post_url = opts.post_url;
       var post_name = opts.post_name;
       var is_demo = opts.is_demo;
+      var size_level = opts.size_level;
+      var component_width;
+      var component_height;
+      var component_font_size;
+      if (size_level == 'big') {
+        component_width = '150px';
+        component_height = '180px';
+        component_font_size = '16px';
+      } else if (size_level == 'small') {
+        component_width = '70px';
+        component_height = '90px';
+        component_font_size = '12px';
+      } else {
+        component_width = '100px';
+        component_height = '130px';
+        component_font_size = '15px';
+      }
 
       var my_css = ' <style> \
             .jtailor-layer{display:none;position:fixed;z-index:100;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);font-family:"微软雅黑";}\
-            .jtailor-layer .lywrap{overflow:hidden;width:560px;padding:15px 0;margin:60px auto 0;background-color:#fafafa; text-align:center;box-shadow:10px 10px 10px;}\
+            .jtailor-layer .lywrap{overflow:hidden;width:600px;padding:15px 0;margin:60px auto 0;background-color:#fafafa; text-align:center;box-shadow:10px 10px 10px;border-radius:5px;}\
             .jtailor-layer .lywrap h5{padding:0;margin-top:0;}\
             .jtailor-layer.z-show{display:block;}\
             .jtailor-layer .resizer{overflow: hidden;position:relative;}\
@@ -23,13 +40,17 @@
             .jtailor-layer .have-img .frames{display:block}\
             .jtailor-layer .info_pic_file { margin:200px auto 0;}\
             .jtailor-layer .info_pic_submit { display:none; }\
-            .jtailor-layer .microImage{ position:absolute;left:440px;top:100px;width:100px;text-align:center;}\
-            .jtailor-layer .pre-view { position:absolute;left:440px; top:150px; height:100px; width:100px; background-color:#C2C2C2;}\
+            .jtailor-layer .microImage{ position:absolute;left:460px;top:0;width:100px;text-align:center;}\
+            .jtailor-layer .pre-view-big { position:absolute;left:435px; top:30px; height:150px; width:150px; background-color:#C2C2C2;}\
+            .jtailor-layer .pre-view-middle { position:absolute;left:460px; top:205px; height:100px; width:100px; background-color:#C2C2C2;}\
+            .jtailor-layer .pre-view-small { position:absolute;left:475px; top:330px; height:70px; width:70px; background-color:#C2C2C2;}\
             .jtailor-layer .have-img .info_pic_file {display:none;}\
             .jtailor-layer .u-minus, .jtailor-layer .u-plus { padding:1px 6px;margin:10px; background-color:#7F7F7F; color:white; border:none;font-size:16px;}\
             .jtailor-layer .u-submit, .u-cancel {  float:right; border:none; color:white;font-family:"微软雅黑"; }\
             .jtailor-layer .u-submit { padding:3px 10px;margin-right:8px; background-color: #EE7600; }\
             .jtailor-layer .u-cancel { padding:3px 10px;margin-right: 20px;  background-color:#949494;}\
+        	.jtailor_avatar{width:' + component_width + ';height:' + component_width + ';display:inline-block;background-color:#C2C2C2;text-align:center}\
+        	.jtailor_avatar_upload{position:absolute;width:100%;font-size:' + component_font_size + ';font-family:"微软雅黑";padding:2px 0;bottom:0;left:0;background-color:rgb(61,147,215);color:white;border:none;outline:none;}\
             </style>';
 
       var my_html = '<div class="jtailor-layer">\
@@ -45,7 +66,9 @@
                     </form>\
                   </div>\
                   <h5 class="microImage">缩略图</h5>\
-                  <canvas class="pre-view" width="100" height="100"></canvas>\
+                  <canvas class="pre-view-big" width="150" height="150"></canvas>\
+                  <canvas class="pre-view-middle" width="100" height="100"></canvas>\
+                  <canvas class="pre-view-small" width="70" height="70"></canvas>\
                   <button class="u-minus">&ndash;</button>\
                   <button class="u-plus">&#43;</button>\
                 </div>\
@@ -54,16 +77,24 @@
               </div>\
           </div>';
 
+      var my_html2 = '<img src="" alt="等待上传头像" class="jtailor_avatar"/>\
+          <button class="jtailor_avatar_upload">上传头像</button>';
+
       // var my_demo = document.createElement('img');
 
       $('head').append(my_css);
       var t = $(this);
-      var my_demo;
-      if(is_demo){
-        my_demo=t.parent().find('img');
-      }
+      t.css({
+        'width': component_width,
+        'height': component_height
+      });
       t.after(my_html);
-      t.click(function() {
+      t.append(my_html2);
+      var my_demo;
+      if (is_demo) {
+        my_demo = $('.jtailor_avatar');
+      }
+      $('.jtailor_avatar_upload').click(function() {
         $('.jtailor-layer').addClass('z-show');
       });
       var avatar = $('.jtailor-layer .info_pic_file');
@@ -78,7 +109,9 @@
 
         resizer.image = resizer.find('img')[0];
         resizer.frames = resizer.find('.frames');
-        resizer.canvas = resizer.find('.pre-view')[0];
+        resizer.canvas_big = resizer.find('.pre-view-big')[0];
+        resizer.canvas_middle = resizer.find('.pre-view-middle')[0];
+        resizer.canvas_small = resizer.find('.pre-view-small')[0];
 
         resizer.frames.offset = {
           top: 0,
@@ -101,8 +134,8 @@
           var tmp = resizer.frames.width();
           var max = resizer.getDefaultSize();
           tmp = tmp + 20;
-          console.log(resizer.image.offsetLeft);
-          console.log(resizer.frames.offset.left);
+          //   console.log(resizer.image.offsetLeft);
+          //   console.log(resizer.frames.offset.left);
           if (tmp > max) {
             tmp = max;
           } else if (tmp + resizer.frames.offset.left > resizer.image.offsetLeft + resizer.image.offsetWidth) {
@@ -119,8 +152,12 @@
 
         $('.jtailor-layer .u-submit').click(function() {
           resizer.clipImage();
-          var ctx = resizer.canvas.getContext('2d');
-          ctx.clearRect(0, 0, 100, 100);
+          var ctx_big = resizer.canvas_big.getContext('2d');
+          var ctx_middle = resizer.canvas_middle.getContext('2d');
+          var ctx_small = resizer.canvas_small.getContext('2d');
+          ctx_big.clearRect(0, 0, 150, 150);
+          ctx_middle.clearRect(0, 0, 100, 100);
+          ctx_small.clearRect(0, 0, 70, 70);
           $('.u-cancel').click();
           var url = post_url;
           if (!url || !resizedImage) return;
@@ -152,30 +189,47 @@
           resizer.removeClass('have-img');
           $('.jtailor-layer').removeClass('z-show');
           $('input:file').val(''); //记得清空input
-          var ctx = resizer.canvas.getContext('2d');
-          ctx.clearRect(0, 0, 100, 100);
+          var ctx_big = resizer.canvas_big.getContext('2d');
+          var ctx_middle = resizer.canvas_middle.getContext('2d');
+          var ctx_small = resizer.canvas_small.getContext('2d');
+          ctx_big.clearRect(0, 0, 150, 150);
+          ctx_middle.clearRect(0, 0, 100, 100);
+          ctx_small.clearRect(0, 0, 70, 70);
         });
 
         resizer.drawPreview = function(x, y, w) {
           var scale = this.image.naturalWidth / this.image.offsetWidth;
-          var ctx = this.canvas.getContext('2d');
+          var ctx_big = this.canvas_big.getContext('2d');
+          var ctx_middle = this.canvas_middle.getContext('2d');
+          var ctx_small = this.canvas_small.getContext('2d');
           x = x * scale;
           y = y * scale;
           w = w * scale;
-          ctx.drawImage(this.image, x, y, w, w, 0, 0, 100, 100);
+          ctx_big.drawImage(this.image, x, y, w, w, 0, 0, 150, 150);
+          ctx_middle.drawImage(this.image, x, y, w, w, 0, 0, 100, 100);
+          ctx_small.drawImage(this.image, x, y, w, w, 0, 0, 70, 70);
         }
 
         resizer.clipImage = function() {
           var nh = this.image.naturalHeight,
             nw = this.image.naturalWidth;
           var scale = nw / this.image.offsetWidth;
-
-          var ctx = this.canvas.getContext('2d'),
-            x = this.frames.offset.left * scale,
+          var ctx;
+          var size;
+          if (size_level == 'big') {
+            ctx = this.canvas_big.getContext('2d');
+            size = 150;
+          } else if (size_level == 'middle') {
+            ctx = this.canvas_middle.getContext('2d');
+            size = 100;
+          } else {
+            ctx = this.canvas_small.getContext('2d');
+            size = 70;
+          }
+          var x = this.frames.offset.left * scale,
             y = this.frames.offset.top * scale,
             w = this.frames.offset.size * scale;
 
-          var size = 100;
 
           if (this.image.offsetWidth > this.image.offsetHeight) {
             y = 0;
@@ -184,10 +238,17 @@
           }
           ctx.drawImage(this.image, x, y, w, w, 0, 0, size, size);
           type = "image/jpeg";
-          var src = this.canvas.toDataURL(type);
+          var src;
+          if (size_level == 'big') {
+            src = this.canvas_big.toDataURL(type);
+          } else if (size_level == 'middle') {
+            src = this.canvas_middle.toDataURL(type);
+          } else {
+            src = this.canvas_small.toDataURL(type);
+          }
           if (is_demo) {
             $(my_demo).attr('src', src);
-            // t.before(my_demo);
+          // t.before(my_demo);
           }
           src = src.split(',')[1];
           if (!src) return this.doneCallback(null);
@@ -227,7 +288,7 @@
               resizer.image.style.width = "400px";
               tmpSize = resizer.image.offsetHeight;
               reloadInfo = resizer.image.naturalHeight;
-              console.log(tmpSize);
+              //   console.log(tmpSize);
               resizer.image.style.top = 200 - tmpSize / 2 + "px";
               resizer.image.style.left = 0;
               resizer.frames.css({
@@ -249,7 +310,7 @@
             resizer.setFrameSize(tmpSize);
             resizer.drawPreview(0, 0, tmpSize);
             if (tmpSize == 400 && reloadInfo != 400) {
-              console.log('reload');
+              //   console.log('reload');
               reader.readAsDataURL(file);
             }
           };
@@ -388,6 +449,7 @@
     src_url: '',
     post_url: '',
     post_name: '',
-    is_demo: false
+    is_demo: false,
+    size_level: 'middle'
   }
 }(window.jQuery);
