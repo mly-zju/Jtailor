@@ -1,16 +1,16 @@
 一款非常轻量级的头像上传组件，使用html5的canvas技术实现头像的裁剪，并使用ajax上传到指定地址。使用方法如下：
 
-下载源码，将Jtailor.js存入你的工程目录下，然后使用<script src="Jtailor.js"></script>导入。
+下载源码，将Jtailor.js存入你的工程目录下，然后在你需要的文件中导入。
 同时需要注意，由于该组件依赖于jQuery，所以使用之前请先确保导入了jQuery。
 
 作为组件使用，在html中引入下面的代码：
 
-<div class='jtailor_avatar_wrapper'>
-	<img src='' alt='等待上传' class='jtailor_avatar'/>
-	<button class="jtailor_avatar_upload">上传头像</button>
-</div>
+	<div class='jtailor_avatar_wrapper'>
+		<img src='' alt='等待上传' class='jtailor_avatar'/>
+		<button class="jtailor_avatar_upload">上传头像</button>
+	</div>
 
-其中最外层的div的class可以用户自行设置，方便使用即可。同时在<script>中导入一行代码：$('.jtailor_avatar_wrapper').avatar_init();
+其中最外层的div的class可以用户自行设置，方便使用即可。同时在js中导入一行代码：$('.jtailor_avatar_wrapper').avatar_init();
 这样即可快速使用。如果需要定制，avatar_init()方法提供了下述参数：
 post_url: 设置图片需要上传的目的地地址，默认为空。
 post_name: 设置图片上传post的名称，默认为空。服务端可以通过post_name来获得上传的图片数据。
