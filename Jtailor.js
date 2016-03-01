@@ -4,7 +4,7 @@
     "avatar_init": function(options) {
       var opts = $.extend({}, $.fn.avatar_init.defaults, options);
 
-      var src_url = opts.src_url;
+      // var src_url = opts.src_url;
       var post_url = opts.post_url;
       var post_name = opts.post_name;
       var size_level = opts.size_level;
@@ -438,7 +438,6 @@
   });
 
   $.fn.avatar_init.defaults = {
-    src_url: '',
     post_url: '',
     post_name: '',
     size_level: 'middle',
