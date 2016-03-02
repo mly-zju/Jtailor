@@ -122,6 +122,8 @@
           var tmpSize = resizer.frames.offset.size;
           var x = resizer.frames.offset.left - resizer.image.offsetLeft;
           var y = resizer.frames.offset.top - resizer.image.offsetTop;
+          console.log(resizer.frames.offset.top);
+          console.log(resizer.image.offsetTop);
           resizer.drawPreview(x, y, tmpSize);
         });
 
@@ -219,16 +221,16 @@
             ctx = this.canvas_small.getContext('2d');
             size = 70;
           }
-          var x = this.frames.offset.left * scale,
-            y = this.frames.offset.top * scale,
+          var x = (this.frames.offset.left-this.image.offsetLeft) * scale,
+            y = (this.frames.offset.top-this.image.offsetTop) * scale,
             w = this.frames.offset.size * scale;
 
 
-          if (this.image.offsetWidth > this.image.offsetHeight) {
-            y = 0;
-          } else {
-            x = 0;
-          }
+          // if (this.image.offsetWidth > this.image.offsetHeight) {
+          //   y = 0;
+          // } else {
+          //   x = 0;
+          // }
           ctx.drawImage(this.image, x, y, w, w, 0, 0, size, size);
           type = "image/jpeg";
           var src;
@@ -283,6 +285,8 @@
               //   console.log(tmpSize);
               resizer.image.style.top = 200 - tmpSize / 2 + "px";
               resizer.image.style.left = 0;
+              resizer.frames.offset.top=200-tmpSize/2;
+              resizer.frames.offset.left=0;
               resizer.frames.css({
                 'top': 200 - tmpSize / 2 + 'px',
                 'left': 0
@@ -294,6 +298,8 @@
               reloadInfo = resizer.image.naturalWidth;
               resizer.image.style.left = 200 - tmpSize / 2 + "px";
               resizer.image.style.top = 0;
+              resizer.frames.offset.left=200-tmpSize/2;
+              resizer.frames.offset.top=0;
               resizer.frames.css({
                 'left': 200 - tmpSize / 2 + 'px',
                 'top': 0
