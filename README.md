@@ -21,4 +21,4 @@ fail: function(data){};是一个ajax失败后的回调函数，其中data为ajax
 通过设置这些参数，用户可以将组件应用于自己的需求中。比如，可以：
 $('.jtailor_avatar_wrapper').avatar_init({post_url: 'example.com', post_name: 'mine_avatar', size_level: 'big', success: function(data){alert(data);}});
 
-组件可以和其他html元素配合使用，构建丰富的页面，一个简单的应用demo见源码demo1.html，你也可以在线看效果：http://7xovdy.com1.z0.glb.clouddn.com/Jtailor_2/demo1.html
+组件可以和其他html元素配合使用，构建丰富的页面，一个简单的应用demo见源码demo1.html，你也可以在线看效果：http://mly-zju.github.io/project/Jtailor/demo.html
